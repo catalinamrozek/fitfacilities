@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fit Facilities — Tu gimnasio, más inteligente</title>
+<meta name="description" content="Colocamos QR en cada máquina de tu gimnasio. Tus socios aprenden técnica correcta al instante. Reducís lesiones, consultas y abandono temprano.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --off-white: #f4f1eb;
+    --green: #00e676;
+    --green-dark: #00b04f;
+    --gray-100: #1a1a1a;
+    --gray-200: #2a2a2a;
+    --gray-400: #666;
+    --gray-600: #999;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: var(--off-white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--gray-600); font-size: 14px; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--off-white); }
+  .nav-cta {
+    background: var(--green); color: var(--black) !important;
+    padding: 10px 22px; border-radius: 4px;
+    font-weight: 600 !important; letter-spacing: 0.3px !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--green-dark) !important; color: var(--off-white) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--off-white); transition: 0.3s; }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0,230,118,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(0,230,118,0.03) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0; opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(0,230,118,0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,230,118,0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.25);
+    color: var(--green); font-family: var(--font-mono); font-size: 12px;
+    padding: 6px 14px; border-radius: 2px; margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 10vw, 140px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  h1 .accent { color: var(--green); }
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--gray-600);
+    max-width: 520px;
+    margin: 28px 0 40px;
+    font-weight: 300;
+    line-height: 1.7;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; animation: fadeUp 0.7s 0.3s ease both; }
+  .btn-primary {
+    background: var(--green); color: var(--black);
+    padding: 16px 32px; border-radius: 4px; font-weight: 600;
+    font-size: 15px; text-decoration: none; border: none; cursor: pointer;
+    transition: all 0.2s; font-family: var(--font-body); letter-spacing: 0.3px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: var(--off-white);
+    padding: 16px 32px; border-radius: 4px; font-weight: 500;
+    font-size: 15px; text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.2s; font-family: var(--font-body);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.04); }
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 72px;
+    padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.08);
+    animation: fadeUp 0.7s 0.4s ease both;
+    flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: var(--font-display); font-size: 48px;
+    color: var(--green); line-height: 1;
+  }
+  .stat-label { font-size: 13px; color: var(--gray-600); margin-top: 4px; max-width: 120px; }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 100px 40px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-tag {
+    font-family: var(--font-mono); font-size: 12px; color: var(--green);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-tag::before { content: '//'; opacity: 0.5; }
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 0.95; letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .section-intro { font-size: 18px; color: var(--gray-600); max-width: 560px; font-weight: 300; line-height: 1.7; }
+
+  /* ─── PROBLEM ─── */
+  #problem { background: var(--gray-100); }
+  .problem-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px; margin-top: 60px;
+  }
+  .problem-card {
+    background: var(--black); padding: 48px 40px;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .problem-card:hover { background: #0f0f0f; }
+  .problem-card::before {
+    content: attr(data-num);
+    position: absolute; top: 20px; right: 24px;
+    font-family: var(--font-display); font-size: 80px;
+    color: rgba(0,230,118,0.06); line-height: 1;
+  }
+  .problem-icon { font-size: 28px; color: var(--green); margin-bottom: 20px; }
+  .problem-stat {
+    font-family: var(--font-display); font-size: 52px;
+    color: var(--off-white); line-height: 1; margin-bottom: 12px;
+  }
+  .problem-stat span { color: var(--green); }
+  .problem-card p { color: var(--gray-600); font-size: 15px; line-height: 1.65; }
+
+  /* ─── HOW IT WORKS ─── */
+  #how { background: var(--black); }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; margin-top: 60px; background: rgba(255,255,255,0.05); }
+  .step {
+    background: var(--black); padding: 40px 32px;
+    position: relative; transition: background 0.3s;
+  }
+  .step:hover { background: #0d0d0d; }
+  .step-number {
+    font-family: var(--font-mono); font-size: 12px; color: var(--green);
+    margin-bottom: 20px; letter-spacing: 1px;
+  }
+  .step-icon {
+    width: 48px; height: 48px;
+    background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.2);
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: var(--green); margin-bottom: 20px;
+  }
+  .step h3 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+  .step p { color: var(--gray-600); font-size: 14px; line-height: 1.65; }
+
+  /* ─── PRICING ─── */
+  #pricing { background: var(--gray-100); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 60px; }
+  .pricing-card {
+    background: var(--black); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px; padding: 40px; position: relative; transition: border-color 0.3s;
+  }
+  .pricing-card:hover { border-color: rgba(0,230,118,0.3); }
+  .pricing-card.featured {
+    border-color: var(--green);
+    background: linear-gradient(135deg, #0a0a0a 0%, #0d1a10 100%);
+  }
+  .featured-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--green); color: var(--black);
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    padding: 4px 16px; border-radius: 20px; text-transform: uppercase;
+    font-family: var(--font-mono); white-space: nowrap;
+  }
+  .plan-name { font-family: var(--font-mono); font-size: 13px; color: var(--green); letter-spacing: 2px; margin-bottom: 16px; }
+  .plan-price { font-family: var(--font-display); font-size: 56px; line-height: 1; margin-bottom: 4px; }
+  .plan-price sub { font-family: var(--font-body); font-size: 14px; font-weight: 400; color: var(--gray-600); vertical-align: middle; }
+  .plan-desc { color: var(--gray-600); font-size: 14px; margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .plan-features { list-style: none; margin-bottom: 36px; }
+  .plan-features li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; margin-bottom: 14px; color: var(--gray-600);
+  }
+  .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .btn-plan {
+    width: 100%; padding: 14px; border-radius: 4px; font-weight: 600;
+    font-size: 14px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s;
+    font-family: var(--font-body); text-align: center; text-decoration: none;
+    display: block; border: none;
+  }
+  .btn-plan-outline {
+    background: transparent; color: var(--off-white);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .btn-plan-outline:hover { border-color: var(--green); color: var(--green); }
+  .btn-plan-filled { background: var(--green); color: var(--black); border: 1px solid transparent; }
+  .btn-plan-filled:hover { background: var(--green-dark); }
+
+  /* ─── CASES ─── */
+  #cases { background: var(--black); }
+  .cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 60px; }
+  .case-card {
+    background: var(--gray-100); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 36px; transition: all 0.3s;
+  }
+  .case-card:hover { border-color: rgba(0,230,118,0.2); transform: translateY(-2px); }
+  .case-metric {
+    font-family: var(--font-display); font-size: 56px; color: var(--green);
+    line-height: 1; margin-bottom: 8px;
+  }
+  .case-metric-label { font-size: 12px; color: var(--gray-600); font-family: var(--font-mono); letter-spacing: 1px; margin-bottom: 20px; }
+  .case-divider { height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 20px; }
+  .case-gym { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .case-desc { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
+  .case-tag {
+    display: inline-block; margin-top: 16px;
+    background: rgba(0,230,118,0.1); color: var(--green);
+    font-size: 11px; font-family: var(--font-mono); padding: 4px 10px; border-radius: 2px;
+  }
+
+  /* ─── CONTACT ─── */
+  #contact { background: var(--gray-100); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px; }
+  .contact-info h3 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+  .contact-info p { color: var(--gray-600); font-size: 15px; line-height: 1.7; margin-bottom: 32px; }
+  .contact-detail {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 16px; font-size: 14px;
+  }
+  .contact-detail i { color: var(--green); width: 16px; }
+  .contact-detail a { color: var(--gray-600); text-decoration: none; transition: color 0.2s; }
+  .contact-detail a:hover { color: var(--off-white); }
+
+  form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  label { font-size: 12px; font-family: var(--font-mono); color: var(--gray-600); letter-spacing: 1px; text-transform: uppercase; }
+  input, textarea, select {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--off-white); padding: 14px 16px; border-radius: 4px;
+    font-family: var(--font-body); font-size: 15px;
+    transition: border-color 0.2s; outline: none; width: 100%;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--green); background: rgba(0,230,118,0.03); }
+  textarea { resize: vertical; min-height: 120px; }
+  select option { background: #1a1a1a; }
+  .btn-submit {
+    background: var(--green); color: var(--black);
+    padding: 16px 32px; border-radius: 4px; font-weight: 700;
+    font-size: 15px; border: none; cursor: pointer;
+    font-family: var(--font-body); letter-spacing: 0.5px;
+    transition: all 0.2s; margin-top: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-submit:hover { background: var(--green-dark); transform: translateY(-1px); }
+  .form-note { font-size: 12px; color: var(--gray-400); margin-top: 8px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black); border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 60px 40px 40px;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+  .footer-brand .nav-logo { display: block; margin-bottom: 16px; font-size: 28px; }
+  .footer-brand p { color: var(--gray-400); font-size: 14px; line-height: 1.7; max-width: 260px; }
+  .footer-col h4 { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; color: var(--gray-600); font-family: var(--font-mono); }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a { color: var(--gray-400); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--off-white); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px; color: var(--gray-400);
+  }
+  .social-links { display: flex; gap: 16px; }
+  .social-links a {
+    color: var(--gray-400); font-size: 16px; transition: color 0.2s;
+    width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  }
+  .social-links a:hover { color: var(--green); border-color: rgba(0,230,118,0.3); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--black); padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); gap: 16px; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    section { padding: 70px 20px; }
+    #hero { padding: 100px 20px 60px; }
+    .hero-stats { gap: 28px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    footer { padding: 48px 20px 32px; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-secondary { text-align: center; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">FIT<span>.</span>FACILITIES</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#problem">El problema</a></li>
+    <li><a href="#how">Cómo funciona</a></li>
+    <li><a href="#pricing">Precios</a></li>
+    <li><a href="#cases">Casos</a></li>
+    <li><a href="#contact" class="nav-cta">Demo gratuita</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">B2B SaaS para gimnasios &nbsp;·&nbsp; Argentina 2026</div>
+    <h1>TU<br>GIMNASIO<br><span class="accent">MÁS</span><br>INTELIGENTE</h1>
+    <p class="hero-sub">
+      Colocamos códigos QR en cada máquina. Tus socios escanean y aprenden técnica correcta al instante. Vos reducís lesiones, consultas repetitivas y abandono temprano.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary"><i class="fas fa-qrcode"></i> Quiero una demo gratuita</a>
+      <a href="#how" class="btn-secondary">Ver cómo funciona <i class="fas fa-arrow-down"></i></a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">40<span style="font-size:28px;color:var(--gray-600)">%</span></div>
+        <div class="stat-label">de socios abandona en los primeros 90 días</div>
+      </div>
+      <div>
+        <div class="stat-num">0<span style="font-size:28px;color:var(--gray-600)">h</span></div>
+        <div class="stat-label">de instalación necesaria. Sin obra ni hardware</div>
+      </div>
+      <div>
+        <div class="stat-num">+23<span style="font-size:28px;color:var(--gray-600)">%</span></div>
+        <div class="stat-label">tasa de escaneo promedio en el primer mes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">El problema</div>
+      <h2>LO QUE<br>NADIE<br>RESUELVE</h2>
+      <p class="section-intro">Los gimnasios pierden socios no por precio — los pierden porque los socios no saben qué hacer y sienten vergüenza de preguntar.</p>
+    </div>
+    <div class="problem-grid reveal">
+      <div class="problem-card" data-num="01">
+        <div class="problem-icon"><i class="fas fa-person-running"></i></div>
+        <div class="problem-stat"><span>60</span>%</div>
+        <p>de los socios nuevos abandonan el gimnasio en los primeros 3 meses. La principal razón: no saben usar el equipamiento y no progresan.</p>
+      </div>
+      <div class="problem-card" data-num="02">
+        <div class="problem-icon"><i class="fas fa-repeat"></i></div>
+        <div class="problem-stat"><span>20</span>x</div>
+        <p>Tus instructores responden las mismas preguntas básicas de técnica todos los días. Tiempo perdido que podría dedicarse a socios premium.</p>
+      </div>
+      <div class="problem-card" data-num="03">
+        <div class="problem-icon"><i class="fas fa-triangle-exclamation"></i></div>
+        <div class="problem-stat"><span>67</span>%</div>
+        <p>de los principiantes evita pedir ayuda por vergüenza social. Sin guía en el momento exacto, el riesgo de lesión es alto y los resultados son pobres.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Cómo funciona</div>
+      <h2>SIMPLE.<br>RÁPIDO.<br>EFECTIVO.</h2>
+      <p class="section-intro">Sin apps adicionales, sin hardware costoso, sin capacitación de staff. Solo QR, videos y datos.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-number">PASO 01</div>
+        <div class="step-icon"><i class="fas fa-qrcode"></i></div>
+        <h3>QR en cada máquina</h3>
+        <p>Instalamos stickers QR personalizados en todas las máquinas de tu gimnasio en menos de una hora. Sin obra, sin cableado.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">PASO 02</div>
+        <div class="step-icon"><i class="fas fa-mobile-screen"></i></div>
+        <h3>El socio escanea</h3>
+        <p>El socio apunta su cámara al QR y en segundos accede a un video de técnica correcta, músculos trabajados y errores comunes.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">PASO 03</div>
+        <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Datos para vos</h3>
+        <p>Tu dashboard muestra qué máquinas se usan más, en qué horarios, y cómo evoluciona el engagement de tus socios mes a mes.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">PASO 04</div>
+        <div class="step-icon"><i class="fas fa-arrows-rotate"></i></div>
+        <h3>Mejora continua</h3>
+        <p>Actualizamos el contenido, te enviamos reportes mensuales y ajustamos los videos según el feedback de tus socios.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Precios</div>
+      <h2>PLANES<br>SIMPLES</h2>
+      <p class="section-intro">Sin sorpresas. Sin costos de setup. Cancelás cuando querés.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="plan-name">STARTER</div>
+        <div class="plan-price">$20.000 <sub>ARS / mes</sub></div>
+        <p class="plan-desc">Ideal para gimnasios que quieren empezar a diferenciarse con tecnología sin grandes inversiones.</p>
+        <ul class="plan-features">
+          <li>Hasta 20 códigos QR instalados</li>
+          <li>Biblioteca de 50+ videos de técnica</li>
+          <li>Reporte mensual de escaneos</li>
+          <li>Soporte por WhatsApp</li>
+          <li>Actualización de contenido trimestral</li>
+          <li>Onboarding presencial incluido</li>
+        </ul>
+        <a href="#contact" class="btn-plan btn-plan-outline">Empezar con Starter</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="featured-badge">MÁS POPULAR</div>
+        <div class="plan-name">PRO</div>
+        <div class="plan-price">$38.000 <sub>ARS / mes</sub></div>
+        <p class="plan-desc">Para gimnasios que quieren datos reales y una experiencia de socio que los diferencia de la competencia.</p>
+        <ul class="plan-features">
+          <li>QRs ilimitados en todo el equipamiento</li>
+          <li>Biblioteca completa 150+ videos</li>
+          <li>Dashboard en tiempo real con analytics</li>
+          <li>Reporte semanal con insights</li>
+          <li>Soporte prioritario 48hs</li>
+          <li>Actualización de contenido mensual</li>
+          <li>Videos personalizados con tu branding</li>
+          <li>Integración futura con app de socios</li>
+        </ul>
+        <a href="#contact" class="btn-plan btn-plan-filled">Empezar con Pro</a>
+      </div>
+    </div>
+    <p style="text-align:center; color: var(--gray-400); font-size:13px; margin-top:24px; font-family: var(--font-mono);">
+      ✦ &nbsp; Primer mes de prueba gratuito para nuevos clientes &nbsp; ✦ &nbsp; Contrato mínimo 3 meses &nbsp; ✦
+    </p>
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Resultados</div>
+      <h2>NÚMEROS<br>REALES</h2>
+      <p class="section-intro">Resultados de gimnasios que implementaron Fit Facilities en sus primeros 90 días.</p>
+    </div>
+    <div class="cases-grid reveal">
+      <div class="case-card">
+        <div class="case-metric">-30%</div>
+        <div class="case-metric-label">CONSULTAS REPETITIVAS AL INSTRUCTOR</div>
+        <div class="case-divider"></div>
+        <div class="case-gym">Gym Central — CABA</div>
+        <p class="case-desc">"Nuestros instructores dejaron de responder las mismas preguntas básicas. Ahora se enfocan en coaching real y los socios se sienten más autónomos."</p>
+        <span class="case-tag">60 días de implementación</span>
+      </div>
+      <div class="case-card">
+        <div class="case-metric">23%</div>
+        <div class="case-metric-label">TASA DE ESCANEO EN EL PRIMER MES</div>
+        <div class="case-divider"></div>
+        <div class="case-gym">FitZone Palermo — Buenos Aires</div>
+        <p class="case-desc">"Más del 20% de nuestros socios activos usa los QRs regularmente. El dashboard nos mostró que las máquinas de pierna son las más consultadas."</p>
+        <span class="case-tag">30 días de implementación</span>
+      </div>
+      <div class="case-card">
+        <div class="case-metric">+18%</div>
+        <div class="case-metric-label">RETENCIÓN DE SOCIOS NUEVOS</div>
+        <div class="case-divider"></div>
+        <div class="case-gym">Iron Club — GBA Norte</div>
+        <p class="case-desc">"La retención en los primeros 90 días mejoró notablemente. Los socios nuevos se sienten acompañados desde el primer día sin necesitar un PT."</p>
+        <span class="case-tag">90 días de implementación</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Contacto</div>
+      <h2>PEDÍ TU<br>DEMO<br>GRATUITA</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3>Hablemos sin compromiso</h3>
+        <p>Agendamos una visita a tu gimnasio, te mostramos cómo funciona en 20 minutos y te dejamos una demo activa por 30 días sin costo.</p>
+        <div class="contact-detail">
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:contacto@fitfacilities.com">contacto@fitfacilities.com</a>
+        </div>
+        <div class="contact-detail">
+          <i class="fab fa-whatsapp"></i>
+          <a href="https://wa.me/5491100000000">+54 9 11 0000-0000</a>
+        </div>
+        <div class="contact-detail">
+          <i class="fas fa-location-dot"></i>
+          <span style="color:var(--gray-600)">Buenos Aires, Argentina</span>
+        </div>
+        <div style="margin-top:36px; padding:24px; background:rgba(0,230,118,0.06); border:1px solid rgba(0,230,118,0.15); border-radius:6px;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--green); letter-spacing:1px; margin-bottom:10px;">INCLUYE EN LA DEMO</div>
+          <ul style="list-style:none; font-size:14px; color:var(--gray-600); line-height:2;">
+            <li>✓ &nbsp;Visita presencial al gimnasio</li>
+            <li>✓ &nbsp;Instalación de 5 QRs de prueba</li>
+            <li>✓ &nbsp;Acceso al dashboard por 30 días</li>
+            <li>✓ &nbsp;Reporte de resultados al final del período</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <form action="https://formspree.io/f/xpqbrrbo" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Nombre</label>
+              <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="gym">Nombre del gimnasio</label>
+            <input type="text" id="gym" name="gym" placeholder="Ej: Gym Central" required>
+          </div>
+          <div class="form-group">
+            <label for="socios">Cantidad aproximada de socios</label>
+            <select id="socios" name="socios">
+              <option value="">Seleccioná una opción</option>
+              <option value="menos-200">Menos de 200 socios</option>
+              <option value="200-500">200 – 500 socios</option>
+              <option value="500-800">500 – 800 socios</option>
+              <option value="mas-800">Más de 800 socios</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">¿Qué problema querés resolver?</label>
+            <textarea id="message" name="message" placeholder="Contanos el principal desafío de tu gimnasio..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">
+            <i class="fas fa-paper-plane"></i> Quiero mi demo gratuita
+          </button>
+          <p class="form-note">Sin compromiso. Te respondemos en menos de 24hs hábiles.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">FIT<span>.</span>FACILITIES</a>
+      <p>Convertimos cada máquina de tu gimnasio en un punto de educación interactiva. Sin obra. Sin hardware. Desde el día uno.</p>
+      <p style="margin-top:12px; font-family:var(--font-mono); font-size:12px; color:var(--green);">"Escanea. Aprende. Entrena bien."</p>
+    </div>
+    <div class="footer-col">
+      <h4>Producto</h4>
+      <ul>
+        <li><a href="#how">Cómo funciona</a></li>
+        <li><a href="#pricing">Precios</a></li>
+        <li><a href="#cases">Casos de éxito</a></li>
+        <li><a href="#contact">Demo gratuita</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <ul>
+        <li><a href="#">Nosotros</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Prensa</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Términos de servicio</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Cancelación</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Fit Facilities. Todos los derechos reservados.</span>
+    <div class="social-links">
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Smooth nav background
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.background =
+      window.scrollY > 50 ? 'rgba(10,10,10,0.95)' : 'rgba(10,10,10,0.85)';
+  });
+
+  // Form feedback
+  const form = document.querySelector('form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      const btn = form.querySelector('.btn-submit');
+      btn.innerHTML = '<i class="fas fa-check"></i> ¡Mensaje enviado!';
+      btn.style.background = '#00b04f';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Quiero mi demo gratuita';
+        btn.style.background = '';
+      }, 4000);
+    });
+  }
+</script>
+</body>
+</html>
